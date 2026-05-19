@@ -151,6 +151,7 @@
       display: flex;
       flex-direction: column;
       gap: 0;
+      height: calc(100vh - 170px);
     }
 
     .column-header {
@@ -209,8 +210,19 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      min-height: 80px;
+      min-height: 0;
+      flex: 1;
+      overflow-y: auto;
+      overscroll-behavior: contain;
     }
+    /* custom scrollbar ให้ดูเนียน */
+    .cards-list::-webkit-scrollbar { width: 4px; }
+    .cards-list::-webkit-scrollbar-track { background: transparent; }
+    .cards-list::-webkit-scrollbar-thumb {
+      background: rgba(0,0,0,0.15);
+      border-radius: 4px;
+    }
+    .cards-list::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.25); }
 
     /* ── Card ── */
     .card {

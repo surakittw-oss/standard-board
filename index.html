@@ -514,14 +514,16 @@ function esc(s) {
 }
 
 function channelCls(ch) {
-  const m = { NEWS:'ch-news', LIFE:'ch-life', POP:'ch-pop', SPORT:'ch-sport', BIZ:'ch-biz', TECH:'ch-tech' };
+  const m = { NEWS:'ch-news', LIFE:'ch-life', POP:'ch-pop', SPORT:'ch-sport', BIZ:'ch-biz', TECH:'ch-tech', WEALTH:'ch-biz' };
   return m[(ch||'').toUpperCase()] || 'ch-default';
 }
 
 function priorityCls(p) {
   if (!p) return 'normal';
   const l = p.toLowerCase();
-  return l.includes('high')||l.includes('สูง') ? 'high' : l.includes('low')||l.includes('ต่ำ') ? 'low' : 'normal';
+  if (l.includes('urgent') || l.includes('high') || l.includes('สูง')) return 'high';
+  if (l.includes('low') || l.includes('ต่ำ')) return 'low';
+  return 'normal';
 }
 
 function artCls(s) {
@@ -714,14 +716,25 @@ async function loadData() {
     if (hi < 0) throw new Error('ไม่พบ header row');
 
     const hdr = rows[hi].map(h => h.trim());
-    const idx = n => hdr.findIndex(h => h === n || h.toLowerCase() === n.toLowerCase());
+    // รองรับทั้งชื่อไทยและอังกฤษ รวมถึงชื่อที่มีวงเล็บต่อท้าย
+    const idx = (...names) => {
+      for (const n of names) {
+        const i = hdr.findIndex(h =>
+          h === n ||
+          h.toLowerCase() === n.toLowerCase() ||
+          h.toLowerCase().startsWith(n.toLowerCase())
+        );
+        if (i !== -1) return i;
+      }
+      return -1;
+    };
 
     const iTitle   = idx('Title');
-    const iStatus  = idx('Status Jobs');
+    const iStatus  = idx('สถานะงาน', 'Status Jobs');
     const iPri     = idx('Priority');
     const iAssign  = idx('Assignee');
     const iDue     = idx('Due Date');
-    const iArt     = idx('Status Art');
+    const iArt     = idx('Status (Art)', 'Status Art');
     const iChan    = idx('Channel');
     const iDocs    = idx('Docs Link');
     const iPhoto   = idx('Link Photo');

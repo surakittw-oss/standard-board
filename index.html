@@ -11,7 +11,6 @@
       font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Noto Sans Thai', sans-serif;
       background: #f2f2f7;
       color: #1d1d1f;
-      min-height: 100vh;
       -webkit-font-smoothing: antialiased;
     }
 
@@ -133,8 +132,7 @@
     /* ── Board layout ── */
     .board-wrapper {
       overflow-x: auto;
-      padding: 20px 28px 32px;
-      min-height: calc(100vh - 110px);
+      padding: 16px 28px 20px;
     }
 
     .board {
@@ -150,7 +148,7 @@
       flex-shrink: 0;
       display: flex;
       flex-direction: column;
-      gap: 0;
+      height: calc(100vh - 190px);
     }
 
     .column-header {
@@ -209,8 +207,19 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      min-height: 80px;
+      min-height: 0;
+      flex: 1;
+      overflow-y: auto;
+      overscroll-behavior: contain;
     }
+    /* custom scrollbar ให้ดูเนียน */
+    .cards-list::-webkit-scrollbar { width: 4px; }
+    .cards-list::-webkit-scrollbar-track { background: transparent; }
+    .cards-list::-webkit-scrollbar-thumb {
+      background: rgba(0,0,0,0.15);
+      border-radius: 4px;
+    }
+    .cards-list::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.25); }
 
     /* ── Card ── */
     .card {
@@ -222,6 +231,7 @@
       cursor: default;
       position: relative;
       overflow: hidden;
+      flex-shrink: 0;
     }
     .card::before {
       content: '';
